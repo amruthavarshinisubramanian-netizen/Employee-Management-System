@@ -62,12 +62,12 @@
 
             <div class="mb-3">
 
-                <label class="form-label">Username</label>
+                <label class="form-label">Email</label>
 
-                <input type="text"
+                <input type="email"
                        class="form-control"
-                       id="username"
-                       placeholder="Enter username">
+                       id="email"
+                       placeholder="Enter email">
 
             </div>
 
@@ -88,7 +88,12 @@
                 Login
 
             </button>
-
+            
+            <p class="text-center mt-3">
+               Don't have an account?
+            <a href="register.html">Register</a>
+            </p>
+            
         </form>
 
     </div>
@@ -96,22 +101,52 @@
 <script>
 
 document.getElementById("loginForm")
-.addEventListener("submit", function(e){
+.addEventListener("submit", async function(e){
 
     e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const user = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
 
-    if(username === "admin" && password === "admin123"){
+    try{
 
-        alert("Login Successful!");
+        const response = await fetch(
+            "http://localhost:8080/users/login",
+            {
+                method: "POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(user)
+            }
+        );
 
-        window.location.href = "dashboard.html";
+        const message = await response.text();
 
-    } else{
+        if(message === "Login Successful"){
 
-        alert("Invalid Username or Password");
+            alert("Login Successful!");
+
+            localStorage.setItem(
+                "loggedInUser",
+                user.email
+            );
+
+            window.location.href =
+                "dashboard.html";
+
+        }else{
+
+            alert("Invalid Email or Password");
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+        alert("Server Error");
 
     }
 
