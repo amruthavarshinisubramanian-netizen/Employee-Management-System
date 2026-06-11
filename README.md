@@ -44,15 +44,24 @@ A full-stack Employee Management System developed using React.js, Spring Boot, a
 
 ## Project Architecture
 
-Frontend (React.js)
-↓
+React.js Frontend
+
+⬇
+
 REST API Calls
-↓
+
+⬇
+
 Spring Boot Backend
-↓
+
+⬇
+
 Spring Data JPA
-↓
+
+⬇
+
 MySQL Database
+
 
 ## Modules
 
