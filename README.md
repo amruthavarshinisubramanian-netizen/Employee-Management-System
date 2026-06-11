@@ -1,82 +1,155 @@
 # Employee Management System
 
-A full-stack Employee Management System built using Java Spring Boot, MySQL, HTML, CSS, JavaScript, and Bootstrap.
+A full-stack Employee Management System developed using React.js, Spring Boot, and MySQL. This application provides a centralized platform for managing employee records with secure user authentication and complete CRUD functionality.
 
 ## Features
 
-* Employee Registration and Management
+* User Registration and Login Authentication
+* Employee Dashboard
 * Add New Employees
-* View Employee List
-* Update Employee Details
-* Delete Employees
-* Employee Search Functionality
-* User Registration
-* User Login Authentication
+* View Employee Records
+* Update Employee Information
+* Delete Employee Records
+* Search Employees by Name
 * Responsive User Interface
-* MySQL Database Integration
+* RESTful API Integration
+* MySQL Database Connectivity
 
-## Technology Stack
+## Tech Stack
+
+### Frontend
+
+* React.js
+* Bootstrap
+* JavaScript
+* HTML5
+* CSS3
 
 ### Backend
 
 * Java
 * Spring Boot
 * Spring Data JPA
-* Maven
-
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-* Bootstrap 5
 
 ### Database
 
 * MySQL
 
-## Project Structure
+### Tools & Technologies
 
-Employee-Portal/
+* Git
+* GitHub
+* Maven
+* Postman
 
-* backend/
-* frontend/
+## Project Architecture
+
+Frontend (React.js)
+↓
+REST API Calls
+↓
+Spring Boot Backend
+↓
+Spring Data JPA
+↓
+MySQL Database
+
+## Modules
+
+### Authentication Module
+
+* User Registration
+* User Login Validation
+
+### Employee Management Module
+
+* Add Employee
+* View Employee List
+* Edit Employee Details
+* Delete Employee Records
+* Search Employee Records
 
 ## API Endpoints
-
-### Employee APIs
-
-* GET /employees
-* GET /employees/{id}
-* POST /employees
-* PUT /employees/{id}
-* DELETE /employees/{id}
 
 ### User APIs
 
 * POST /users/register
 * POST /users/login
 
-## Installation
+### Employee APIs
 
-1. Clone the repository
-2. Configure MySQL database
-3. Update application.properties
-4. Run the Spring Boot application
-5. Open frontend files in a browser
+* GET /employees
+* GET /employees/{id}
+* POST /employees/register
+* PUT /employees/{id}
+* DELETE /employees/{id}
+
+## Installation & Setup
+
+### Clone Repository
+
+```bash
+git clone https://github.com/amruthavarshinisubramanian-netizen/Employee-Management-System.git
+```
+
+### Backend Setup
+
+```bash
+cd C:\Projects\Employee-Portal\backend
+```
+
+Configure MySQL database in:
+
+```properties
+application.properties
+```
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/employee_db
+spring.datasource.username=root
+spring.datasource.password=Ammu@2302
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+Run Backend:
+
+```bash
+.\mvnw.cmd spring-boot:run
+```
+
+### Frontend Setup
+
+```bash
+cd C:\Projects\Employee-Portal\react-frontend
+npm install
+npm run dev
+```
+
+## Screenshots
+
+Add screenshots of:
+
+* Login Page
+* Registration Page
+* Employee Dashboard
+* Add Employee Page
+* Edit Employee Page
 
 ## Future Enhancements
 
 * Role-Based Access Control
 * JWT Authentication
-* Employee Profile Photos
+* Pagination
+* Employee Profile Images
+* Advanced Filtering
 * Dashboard Analytics
-* Pagination and Advanced Search
+* Deployment on Cloud Platforms
 
 ## Author
 
 Amruthavarshini S
 
-## License
-
-This project is developed for learning, portfolio, and demonstration purposes.
+GitHub:
+https://github.com/amruthavarshinisubramanian-netizen
