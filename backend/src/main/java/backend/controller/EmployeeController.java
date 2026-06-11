@@ -8,13 +8,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class EmployeeController {
 
     @Autowired
     EmployeeRepository repo;
 
-    @PostMapping
+    @PostMapping("/register")
     public Employee addEmployee(@RequestBody Employee employee) {
         return repo.save(employee);
     }

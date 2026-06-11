@@ -14,26 +14,33 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
+    public String registerUser(@RequestBody User user) {
 
+        User existingUser = userRepository.findByEmail(user.getEmail());
 
-@PostMapping("/login")
-public String loginUser(@RequestBody User user) {
-
-    User existingUser = userRepository.findByEmail(user.getEmail());
-
-    if(existingUser != null){
-
-        System.out.println("DB Password = " + existingUser.getPassword());
-        System.out.println("Entered Password = " + user.getPassword());
-
-        if(existingUser.getPassword().equals(user.getPassword())){
-            return "Login Successful";
+        if (existingUser != null) {
+            return "Email already exists";
         }
+
+        userRepository.save(user);
+        return "Registration Successful";
     }
 
-    return "Invalid Email or Password";
-}
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+
+        User existingUser = userRepository.findByEmail(user.getEmail());
+
+        if (existingUser != null) {
+
+            System.out.println("DB Password = " + existingUser.getPassword());
+            System.out.println("Entered Password = " + user.getPassword());
+
+            if (existingUser.getPassword().equals(user.getPassword())) {
+                return "Login Successful";
+            }
+        }
+
+        return "Invalid Email or Password";
+    }
 }
