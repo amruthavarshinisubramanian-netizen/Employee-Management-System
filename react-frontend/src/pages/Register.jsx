@@ -1,114 +1,160 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaBuilding, FaUser, FaEnvelope, FaLock, FaUserPlus } from "react-icons/fa";
+import api from "../services/api";
+import { useToast } from "../context/ToastContext";
 
-function Register() {
+export default function Register() {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
+    if (errorMsg) setErrorMsg("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user.name.trim() || !user.email.trim() || !user.password.trim()) {
+      setErrorMsg("Please fill out all required fields.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+
+    if (user.password.length < 4) {
+      setErrorMsg("Password must be at least 4 characters.");
+      return;
+    }
+
+    setSubmitting(true);
     try {
-      const response = await fetch(
-        "http://localhost:8080/users/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(user)
-        }
-      );
-
-      const message = await response.text();
-
-      alert(message);
+      // Calls existing backend endpoint: /users/register
+      const message = await api.register(user);
 
       if (message === "Registration Successful") {
-        window.location.href = "/login";
+        showToast("Registration successful! You can now log in.", "success");
+        navigate("/login");
+      } else {
+        setErrorMsg(message || "Registration failed. Email may already be in use.");
+        showToast(message || "Registration failed", "error");
       }
-
-    } catch (error) {
-      console.error(error);
-      alert("Server Error");
+    } catch (err) {
+      console.error(err);
+      setErrorMsg("Server error: Unable to connect to backend service.");
+      showToast("Cannot connect to server", "error");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="container">
-      <div
-        className="card shadow p-4 mx-auto mt-5"
-        style={{ maxWidth: "450px" }}
-      >
-        <h2 className="text-center text-primary mb-4">
-          Create Account
-        </h2>
+    <div className="auth-page-container">
+      <div className="auth-card">
+        {/* Brand Header */}
+        <div className="text-center mb-4">
+          <div className="brand-icon-box mx-auto mb-3" style={{ width: "48px", height: "48px", fontSize: "1.4rem" }}>
+            <FaBuilding />
+          </div>
+          <h3 className="fw-bold text-primary mb-1">Create HR Account</h3>
+          <p className="text-muted small">Register as an administrator for PulseHR Portal</p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
+        {errorMsg && (
+          <div className="alert alert-danger py-2 px-3 small rounded-3 mb-3 d-flex align-items-center" role="alert">
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} noValidate>
           <div className="mb-3">
-            <label className="form-label">Full Name</label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              placeholder="Enter your name"
-              value={user.name}
-              onChange={handleChange}
-              required
-            />
+            <label className="form-label-custom">Full Name</label>
+            <div className="position-relative">
+              <input
+                type="text"
+                name="name"
+                className="form-control-custom ps-5"
+                placeholder="Amruthavarshini S"
+                value={user.name}
+                onChange={handleChange}
+                required
+              />
+              <FaUser
+                className="position-absolute text-muted"
+                style={{ left: "15px", top: "50%", transform: "translateY(-50%)" }}
+              />
+            </div>
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              className="form-control"
-              placeholder="Enter your email"
-              value={user.email}
-              onChange={handleChange}
-              required
-            />
+            <label className="form-label-custom">Work Email Address</label>
+            <div className="position-relative">
+              <input
+                type="email"
+                name="email"
+                className="form-control-custom ps-5"
+                placeholder="admin@hrportal.com"
+                value={user.email}
+                onChange={handleChange}
+                required
+              />
+              <FaEnvelope
+                className="position-absolute text-muted"
+                style={{ left: "15px", top: "50%", transform: "translateY(-50%)" }}
+              />
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              placeholder="Enter password"
-              value={user.password}
-              onChange={handleChange}
-              required
-            />
+          <div className="mb-4">
+            <label className="form-label-custom">Password</label>
+            <div className="position-relative">
+              <input
+                type="password"
+                name="password"
+                className="form-control-custom ps-5"
+                placeholder="••••••••"
+                value={user.password}
+                onChange={handleChange}
+                required
+              />
+              <FaLock
+                className="position-absolute text-muted"
+                style={{ left: "15px", top: "50%", transform: "translateY(-50%)" }}
+              />
+            </div>
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary w-100"
+            className="btn btn-primary-custom w-100 justify-content-center py-2"
+            disabled={submitting}
           >
-            Register
+            <FaUserPlus /> {submitting ? "Registering..." : "Create Account"}
           </button>
 
-          <p className="text-center mt-3">
-            Already have an account?{" "}
-            <Link to="/login">Login</Link>
-          </p>
+          <div className="text-center mt-4">
+            <span className="text-muted small">Already have an administrator account? </span>
+            <Link to="/login" className="fw-semibold text-primary text-decoration-none small">
+              Sign In Here
+            </Link>
+          </div>
         </form>
       </div>
     </div>
   );
 }
-
-export default Register;

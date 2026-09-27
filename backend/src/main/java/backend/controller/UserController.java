@@ -3,7 +3,10 @@ package backend.controller;
 import backend.model.User;
 import backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -15,7 +18,6 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody User user) {
-
         User existingUser = userRepository.findByEmail(user.getEmail());
 
         if (existingUser != null) {
@@ -28,19 +30,28 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@RequestBody User user) {
-
         User existingUser = userRepository.findByEmail(user.getEmail());
 
         if (existingUser != null) {
-
-            System.out.println("DB Password = " + existingUser.getPassword());
-            System.out.println("Entered Password = " + user.getPassword());
-
             if (existingUser.getPassword().equals(user.getPassword())) {
                 return "Login Successful";
             }
         }
 
         return "Invalid Email or Password";
+    }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<?> getUserByEmail(@RequestParam String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return ResponseEntity.ok(Map.of(
+                    "id", user.getId(),
+                    "name", user.getName(),
+                    "email", user.getEmail(),
+                    "role", "HR Administrator"
+            ));
+        }
+        return ResponseEntity.notFound().build();
     }
 }
