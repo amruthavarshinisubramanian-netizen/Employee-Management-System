@@ -237,3 +237,44 @@ Employee-Portal/
     │
     ├── package.json
     └── vite.config.js
+
+## 🚀 How to Run
+
+### Backend
+
+Open a terminal and run the following commands:
+
+cd E:\Projects\Employee-Portal\backend
+.\mvnw.cmd spring-boot:run
+
+The backend server will run on:
+
+http://localhost:8080
+
+### Frontend
+
+Open a separate terminal and run the following commands:
+
+cd E:\Projects\Employee-Portal\react-frontend
+npm install
+npm run dev
+
+The frontend application will run on:
+
+http://localhost:5173
+
+### Application Flow
+
+React.js Frontend
+       ↓
+Spring Boot Backend
+       ↓
+MySQL Database
+
+---
+
+## 👩‍💻 Author
+
+**Amruthavarshini S**
+
+Software Engineer | Java Full Stack Developer
